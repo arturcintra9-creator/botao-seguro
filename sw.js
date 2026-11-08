@@ -8,7 +8,7 @@
  * Só funciona quando o site é aberto por http(s) ou localhost (não em file://).
  * Ao adicionar um arquivo novo ao projeto, inclua-o na lista ARQUIVOS.
  */
-var CACHE = 'botao-seguro-v1';
+var CACHE = 'botao-seguro-v2';
 
 var ARQUIVOS = [
   './',
@@ -21,12 +21,14 @@ var ARQUIVOS = [
   'calculadora.webmanifest',
   'css/site.css',
   'css/calculadora.css',
+  'css/efeitos.css',
   'js/estado.js',
   'js/calculadora-motor.js',
   'js/calculadora.js',
   'js/configuracoes.js',
   'js/painel.js',
   'js/estande.js',
+  'js/efeitos.js',
   'icones/marca.svg',
   'icones/calculadora.svg',
   'icones/calculadora-180.png',

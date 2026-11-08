@@ -1,0 +1,546 @@
+/*
+ * efeitos.css — animações, efeitos e "scroll trigger" das páginas informativas
+ * (início e como funciona). Sem bibliotecas: tudo em CSS + js/efeitos.js.
+ *
+ * Os estados "escondidos" só valem quando o <html> tem a classe .js
+ * (colocada por um script no <head>). Sem JavaScript, tudo aparece normal.
+ * Quem pede "reduzir movimento" no sistema vê tudo parado (final do arquivo).
+ */
+
+/* Elementos que entram "de lado" não podem criar rolagem horizontal.
+   (clip, e não hidden, para não quebrar o position: sticky) */
+html, body { overflow-x: clip; }
+
+/* ============ 1. Topo fixo com vidro fosco ============ */
+.topo-barra {
+  position: relative;
+  z-index: 50;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+@media (min-width: 760px) {
+  .topo-barra { position: sticky; top: 0; }
+  .topo-barra.rolou {
+    background: rgba(46, 26, 71, 0.78);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    backdrop-filter: blur(14px) saturate(140%);
+    box-shadow: 0 1px 0 var(--borda), 0 10px 30px rgba(10, 4, 20, 0.25);
+  }
+}
+
+/* ============ 2. Barra de progresso da rolagem ============ */
+.progresso-rolagem {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  z-index: 60;
+  background: linear-gradient(90deg, var(--roxo-claro), var(--ouro));
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  pointer-events: none;
+}
+
+/* ============ 3. Fundo com luzes flutuantes ============ */
+.hero { position: relative; isolation: isolate; }
+
+.orbes {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.orbes span {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform;
+}
+.orbes span:nth-child(1) {
+  width: 62vmax; height: 62vmax;
+  left: -22vmax; top: -26vmax;
+  background: radial-gradient(circle, rgba(107, 63, 160, 0.55), transparent 62%);
+  animation: flutuar-1 22s ease-in-out infinite alternate;
+}
+.orbes span:nth-child(2) {
+  width: 46vmax; height: 46vmax;
+  right: -16vmax; top: -4vmax;
+  background: radial-gradient(circle, rgba(232, 163, 23, 0.16), transparent 60%);
+  animation: flutuar-2 26s ease-in-out infinite alternate;
+}
+.orbes span:nth-child(3) {
+  width: 52vmax; height: 52vmax;
+  left: 28%; bottom: -34vmax;
+  background: radial-gradient(circle, rgba(91, 44, 135, 0.6), transparent 60%);
+  animation: flutuar-3 30s ease-in-out infinite alternate;
+}
+/* grade de pontinhos que some nas bordas */
+.orbes::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(237, 224, 245, 0.11) 1px, transparent 1.3px);
+  background-size: 26px 26px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 70% 40%, #000, transparent 75%);
+  mask-image: radial-gradient(ellipse 70% 60% at 70% 40%, #000, transparent 75%);
+}
+
+@keyframes flutuar-1 { to { transform: translate(9vmax, 7vmax) scale(1.12); } }
+@keyframes flutuar-2 { to { transform: translate(-8vmax, 10vmax) scale(0.9); } }
+@keyframes flutuar-3 { to { transform: translate(-10vmax, -6vmax) scale(1.08); } }
+
+/* ============ 4. Título que entra palavra por palavra ============ */
+.js [data-palavras] .palavra {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.5em);
+  filter: blur(8px);
+}
+.js [data-palavras].animar .palavra {
+  animation: palavra-entra 0.9s cubic-bezier(0.2, 0.75, 0.25, 1) forwards;
+  animation-delay: calc(var(--i) * 75ms + 80ms);
+}
+@keyframes palavra-entra { to { opacity: 1; transform: none; filter: none; } }
+
+.destaque { color: var(--ouro); }
+
+/* ============ 5. Elementos que surgem ao rolar ============ */
+.js [data-revelar] {
+  opacity: 0;
+  transition:
+    opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) var(--atraso, 0ms),
+    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) var(--atraso, 0ms),
+    filter 0.8s ease var(--atraso, 0ms),
+    translate 0.3s ease,
+    border-color 0.3s ease;
+}
+.js [data-revelar="subir"]    { transform: translateY(40px); }
+.js [data-revelar="esquerda"] { transform: translateX(-44px); }
+.js [data-revelar="direita"]  { transform: translateX(44px); }
+.js [data-revelar="escala"]   { transform: scale(0.92); filter: blur(6px); }
+.js [data-revelar].visivel    { opacity: 1; transform: none; filter: none; }
+
+/* ============ 6. Cartões com "holofote" que segue o mouse ============ */
+.cartao {
+  position: relative;
+  isolation: isolate;
+  transition: translate 0.3s ease, border-color 0.3s ease;
+}
+.cartao::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s;
+  background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 0%), rgba(232, 163, 23, 0.13), transparent 45%);
+}
+@media (hover: hover) {
+  .cartao:hover::before { opacity: 1; }
+  .cartao:hover { border-color: rgba(237, 224, 245, 0.26); }
+  a.cartao:hover { translate: 0 -4px; }
+}
+
+/* ============ 7. Botão dourado com brilho passando ============ */
+.botao-ouro {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow: 0 12px 32px -12px rgba(232, 163, 23, 0.6);
+}
+.botao-ouro::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.55) 50%, transparent 65%);
+  transform: translateX(-130%);
+}
+.botao-ouro:hover::after { animation: brilhar 0.9s ease; }
+.brilho-auto::after { animation: brilhar-loop 5s 1.8s ease-in-out infinite; }
+@keyframes brilhar { to { transform: translateX(130%); } }
+@keyframes brilhar-loop {
+  0% { transform: translateX(-130%); }
+  22%, 100% { transform: translateX(130%); }
+}
+
+/* ============ 8. Faixa rolando ============ */
+.faixa-moldura {
+  overflow: hidden;
+  padding: 36px 0;
+  margin: -12px 0;
+}
+.faixa {
+  width: 106%;
+  margin-left: -3%;
+  transform: rotate(-2deg);
+  background: var(--roxo);
+  border-block: 1px solid rgba(237, 224, 245, 0.16);
+  box-shadow: var(--sombra);
+  padding: 16px 0;
+  overflow: hidden;
+}
+.faixa-trilho {
+  display: flex;
+  width: max-content;
+  animation: deslizar 34s linear infinite;
+}
+.faixa-trilho span {
+  display: inline-flex;
+  align-items: center;
+  gap: 28px;
+  padding-right: 28px;
+  font-size: clamp(1.3rem, 4vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--branco);
+  white-space: nowrap;
+}
+.faixa-trilho span::after {
+  content: "";
+  width: 0.42em; height: 0.42em;
+  border-radius: 50%;
+  background: var(--ouro);
+}
+@keyframes deslizar { to { transform: translateX(-50%); } }
+
+/* ============ 9. Teclas que "se apertam" sozinhas ============ */
+.teclas-vivas kbd { animation: tecla-viva 3.4s infinite; }
+.teclas-vivas kbd:nth-child(2) { animation-delay: 0.35s; }
+.teclas-vivas kbd:nth-child(3) { animation-delay: 0.7s; }
+.teclas-vivas kbd:nth-child(4) { animation-delay: 1.05s; }
+@keyframes tecla-viva {
+  0%, 22%, 100% { background: #333; color: #fff; transform: none; }
+  7% { background: var(--ouro); color: var(--fundo); transform: translateY(2px); box-shadow: 0 0 0 #111; }
+}
+
+/* Passos numerados que "estalam" ao aparecer */
+.js .teste-passos li.visivel::before { animation: estalar 0.55s cubic-bezier(0.3, 1.6, 0.5, 1) var(--atraso, 0ms) backwards; }
+@keyframes estalar { from { transform: scale(0); } }
+
+/* ============ 10. Ilustração do início (animada por efeitos.js) ============ */
+.ilustracao-moldura { width: 100%; max-width: 360px; margin: 0 auto; }
+.ilustracao { animation: flutuar-ilustra 7s ease-in-out infinite; overflow: visible; }
+@keyframes flutuar-ilustra { 50% { transform: translateY(-10px); } }
+
+.ilustracao .k { transition: fill 0.3s; }
+.ilustracao .k.aperta { fill: #E8A317; transition: none; }
+
+.hero-ondas path { opacity: 0.14; }
+.enviando .hero-ondas path { animation: onda 1.3s ease-out infinite; }
+.enviando .hero-ondas .onda-2 { animation-delay: 0.2s; }
+.enviando .hero-ondas .onda-3 { animation-delay: 0.4s; }
+@keyframes onda {
+  0% { opacity: 0.1; }
+  30% { opacity: 1; }
+  100% { opacity: 0.1; }
+}
+
+.hero-pin { transform-box: fill-box; transform-origin: 50% 100%; }
+.enviado .hero-pin { animation: quicar 0.8s cubic-bezier(0.3, 1.6, 0.5, 1); }
+@keyframes quicar {
+  0% { transform: translateY(0) scale(1); }
+  35% { transform: translateY(-14px) scale(1.08); }
+  100% { transform: none; }
+}
+.hero-halo {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+}
+.enviado .hero-halo { animation: halo 1.6s ease-out infinite; }
+@keyframes halo {
+  from { opacity: 0.8; transform: scale(1); }
+  to { opacity: 0; transform: scale(1.6); }
+}
+
+.hero-chip {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s, transform 0.5s cubic-bezier(0.3, 1.5, 0.5, 1);
+}
+.enviado .hero-chip { opacity: 1; transform: none; }
+
+/* ============ 11. História com celular fixo (scroll trigger) ============ */
+.historia {
+  display: grid;
+  gap: 0 56px;
+  align-items: start;
+}
+.historia-palco {
+  position: sticky;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+}
+.palco-interno { position: relative; }
+
+/* celular de mentirinha */
+.mock {
+  --k: 38px;   /* tamanho da tecla */
+  --g: 8px;    /* espaço entre teclas */
+  position: relative;
+  z-index: 2;
+  padding: 10px;
+  border-radius: 38px;
+  background: #120A1D;
+  box-shadow: 0 0 0 2px #4A2F6B, var(--sombra);
+  transition: box-shadow 0.6s;
+}
+.mock::before { /* câmera */
+  content: "";
+  position: absolute;
+  top: 20px; left: 50%;
+  width: 54px; height: 14px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: #120A1D;
+  z-index: 1;
+}
+.mock-tela {
+  background: #000;
+  border-radius: 30px;
+  padding: 56px 12px 16px;
+}
+.mock-visor {
+  color: #fff;
+  font-weight: 300;
+  font-size: calc(var(--k) * 1.15);
+  line-height: 1;
+  text-align: right;
+  padding: 0 6px 12px;
+  font-variant-numeric: tabular-nums;
+  min-height: 1.15em;
+}
+.mock-teclas {
+  display: grid;
+  grid-template-columns: repeat(4, var(--k));
+  grid-auto-rows: var(--k);
+  gap: var(--g);
+}
+.mock-teclas span {
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #333;
+  color: #fff;
+  font-size: calc(var(--k) * 0.4);
+  transition: background-color 0.3s, color 0.3s, transform 0.2s;
+}
+.mock-teclas .f { background: #a5a5a5; color: #000; }
+.mock-teclas .o { background: #636366; }
+.mock-teclas .z { grid-column: span 2; border-radius: 999px; justify-items: start; padding-left: calc(var(--k) * 0.38); }
+.mock-teclas .aperta {
+  background: var(--ouro) !important;
+  color: var(--fundo) !important;
+  transform: scale(0.88);
+  transition: none;
+}
+
+/* etiquetas em volta do celular */
+.mock-chips { position: absolute; inset: 0; pointer-events: none; z-index: 3; }
+.chip {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(46, 26, 71, 0.9);
+  border: 1px solid var(--borda);
+  color: var(--lavanda);
+  font-size: 0.86rem;
+  font-weight: 600;
+  box-shadow: 0 14px 34px rgba(10, 4, 20, 0.45);
+  opacity: 0;
+  transform: translateY(12px) scale(0.9);
+  transition: opacity 0.35s, transform 0.5s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+.chip::before {
+  content: "";
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--ouro);
+}
+.chip:nth-child(1) { left: -96px; top: 16%; }
+.chip:nth-child(2) { right: -104px; top: 42%; }
+.chip:nth-child(3) { left: -78px; top: 70%; }
+[data-ativo="1"] .chips-1 .chip,
+[data-ativo="2"] .chips-2 .chip {
+  opacity: 1;
+  transform: none;
+}
+[data-ativo="1"] .chips-1 .chip:nth-child(2),
+[data-ativo="2"] .chips-2 .chip:nth-child(2) { transition-delay: 0.12s; }
+[data-ativo="1"] .chips-1 .chip:nth-child(3),
+[data-ativo="2"] .chips-2 .chip:nth-child(3) { transition-delay: 0.24s; }
+
+/* ondas e notificação (passo 3) */
+.mock-ondas {
+  position: absolute;
+  left: 100%;
+  top: 30%;
+  width: 64px;
+  height: 110px;
+  margin-left: 4px;
+  overflow: visible;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+[data-ativo="3"] .mock-ondas { opacity: 1; }
+[data-ativo="3"] .mock-ondas path { animation: onda 1.4s ease-out infinite; }
+[data-ativo="3"] .mock-ondas path:nth-child(2) { animation-delay: 0.2s; }
+[data-ativo="3"] .mock-ondas path:nth-child(3) { animation-delay: 0.4s; }
+[data-ativo="3"] .mock { box-shadow: 0 0 0 2px #4A2F6B, 0 0 60px rgba(232, 163, 23, 0.25), var(--sombra); }
+
+.mock-notif {
+  position: absolute;
+  left: 64%;
+  bottom: 12%;
+  z-index: 4;
+  width: 232px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: var(--fundo);
+  border: 1px solid rgba(232, 163, 23, 0.45);
+  box-shadow: 0 20px 50px rgba(10, 4, 20, 0.6), 0 0 0 6px rgba(232, 163, 23, 0.08);
+  opacity: 0;
+  transform: translate(30px, 12px) scale(0.92);
+  transition: opacity 0.45s, transform 0.6s cubic-bezier(0.3, 1.3, 0.5, 1);
+  line-height: 1.35;
+}
+[data-ativo="3"] .mock-notif {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.35s;
+}
+.mock-notif small {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ouro);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.mock-notif small::before {
+  content: "";
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--ouro);
+  animation: piscar 1s infinite;
+}
+.mock-notif strong { display: block; font-size: 1.02rem; margin: 4px 0 2px; }
+.mock-notif span { font-size: 0.82rem; color: var(--texto); }
+
+/* textos dos passos */
+.historia-passo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: opacity 0.5s ease;
+}
+.js .historia-passo { opacity: 0.25; }
+.js .historia-passo.ativo { opacity: 1; }
+.historia-passo h3 {
+  font-size: clamp(2rem, 4.4vw, 3rem);
+  letter-spacing: -0.045em;
+  line-height: 1.02;
+  margin-bottom: 0.35em;
+}
+.historia-passo p { font-size: clamp(1.05rem, 2.2vw, 1.2rem); color: var(--lavanda); max-width: 34ch; }
+.historia-passo .passo-num { margin-bottom: 10px; font-size: 1.1rem; letter-spacing: 0.1em; }
+
+@media (min-width: 900px) {
+  .historia { grid-template-columns: 1fr 1fr; }
+  .historia-palco { top: calc(50vh - 190px); }
+  .historia-passo { min-height: 78vh; }
+  .historia-passos { padding-bottom: 12vh; }
+}
+@media (max-width: 899px) {
+  .historia-palco {
+    top: 0;
+    padding: 14px 0 26px;
+    background: linear-gradient(var(--fundo) 82%, rgba(46, 26, 71, 0));
+  }
+  .mock { --k: 27px; --g: 6px; border-radius: 30px; padding: 8px; }
+  .mock::before { top: 15px; width: 40px; height: 10px; }
+  .mock-tela { border-radius: 23px; padding: 38px 9px 11px; }
+  .mock-chips, .mock-ondas { display: none; }
+  .mock-notif { left: 34%; bottom: 6%; width: 196px; padding: 11px 13px; }
+  .mock-notif strong { font-size: 0.92rem; }
+  .historia-passo { min-height: 72vh; padding-top: 6vh; }
+  .historia-passos { padding-bottom: 8vh; }
+}
+
+/* ============ 12. Frase que "acende" com a rolagem ============ */
+.diferencial .frase-rolagem {
+  font-size: clamp(1.6rem, 4.6vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
+  color: var(--branco);
+  max-width: 24ch;
+  margin: 0 0 0.9em;
+}
+.js .frase-rolagem .palavra {
+  color: rgba(237, 224, 245, 0.22);
+  transition: color 0.35s ease;
+}
+.js .frase-rolagem .palavra.acesa { color: var(--branco); }
+.js .frase-rolagem .ouro .palavra.acesa { color: var(--ouro); }
+
+/* ============ 13. Dados: contador + barra ============ */
+.dado-barra {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(237, 224, 245, 0.1);
+  overflow: hidden;
+  margin: 2px 0 16px;
+}
+.dado-barra span {
+  display: block;
+  height: 100%;
+  width: calc(var(--valor) * 1%);
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--roxo-claro), var(--ouro));
+  transform-origin: left;
+}
+.js .dado-barra span {
+  transform: scaleX(0);
+  transition: transform 1.6s cubic-bezier(0.2, 0.7, 0.2, 1) 0.25s;
+}
+.js .visivel .dado-barra span { transform: none; }
+.dado-num span { font-variant-numeric: tabular-nums; }
+
+/* ============ 14. Detalhes finais ============ */
+.js .limites li.visivel::before { animation: estalar 0.5s cubic-bezier(0.3, 1.6, 0.5, 1) calc(var(--atraso, 0ms) + 0.25s) backwards; }
+
+.canal-num { animation: brilho-num 3.2s ease-in-out infinite; }
+@keyframes brilho-num { 50% { text-shadow: 0 0 30px rgba(232, 163, 23, 0.6); } }
+
+.passo-num {
+  background: linear-gradient(120deg, var(--ouro), #f6d27a 50%, var(--ouro));
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: ouro-correndo 4s linear infinite;
+}
+@keyframes ouro-correndo { to { background-position: -200% 0; } }
+
+/* ============ 15. Menos movimento ============ */
+@media (prefers-reduced-motion: reduce) {
+  .js [data-revelar],
+  .js [data-palavras] .palavra {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+  .js .dado-barra span { transform: none; }
+  .js .frase-rolagem .palavra { color: var(--branco); }
+  .faixa-trilho { animation: none; }
+  .orbes span, .ilustracao { animation: none; }
+}

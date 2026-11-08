@@ -8,39 +8,46 @@
   <meta name="theme-color" content="#2E1A47">
   <link rel="icon" href="icones/marca.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/site.css">
+  <link rel="stylesheet" href="css/efeitos.css">
+  <!-- Liga as animações só quando há JavaScript (sem ele, tudo aparece normal). -->
+  <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
-  <header class="topo">
-    <a class="marca" href="index.html" aria-label="Botão Seguro, início">
-      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#5B2C87"/><circle cx="16" cy="16" r="9" fill="none" stroke="#EDE0F5" stroke-width="2.5"/><circle cx="16" cy="16" r="4" fill="#E8A317"/></svg>
-      Botão Seguro
-    </a>
-    <nav class="nav" aria-label="Principal">
-      <a href="como-funciona.html">Como funciona</a>
-      <a href="painel.html">Painel</a>
-      <a href="estande.html">Modo estande</a>
-    </nav>
-  </header>
+  <div class="topo-barra">
+    <header class="topo">
+      <a class="marca" href="index.html" aria-label="Botão Seguro, início">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#5B2C87"/><circle cx="16" cy="16" r="9" fill="none" stroke="#EDE0F5" stroke-width="2.5"/><circle cx="16" cy="16" r="4" fill="#E8A317"/></svg>
+        Botão Seguro
+      </a>
+      <nav class="nav" aria-label="Principal">
+        <a href="como-funciona.html">Como funciona</a>
+        <a href="painel.html">Painel</a>
+        <a href="estande.html">Modo estande</a>
+      </nav>
+    </header>
+  </div>
 
   <main>
     <!-- 1. Apresentação -->
     <section class="hero">
+      <div class="orbes" aria-hidden="true"><span></span><span></span><span></span></div>
+
       <div class="container hero-grade">
         <div>
-          <span class="selo">Protótipo acadêmico · Projeto do Ano 2026 · Senac</span>
-          <h1>Parece uma calculadora. É um pedido de ajuda.</h1>
-          <p class="lead">
+          <span class="selo" data-revelar="subir">Protótipo acadêmico · Projeto do Ano 2026 · Senac</span>
+          <h1 data-palavras>Parece uma calculadora. <span class="destaque">É um pedido de ajuda.</span></h1>
+          <p class="lead" data-revelar="subir" style="--atraso:550ms">
             O Botão Seguro é um app disfarçado de calculadora. Uma mulher em situação de
             violência doméstica digita um código secreto e o app avisa, em silêncio,
             seus contatos de confiança — com a localização dela. Sem som, sem vibração,
             sem nada na tela.
           </p>
-          <div class="botoes">
-            <a class="botao botao-ouro" href="calculadora.html">Abrir a demonstração</a>
+          <div class="botoes" data-revelar="subir" style="--atraso:700ms">
+            <a class="botao botao-ouro brilho-auto" href="calculadora.html">Abrir a demonstração</a>
             <a class="botao botao-contorno" href="como-funciona.html">Como funciona</a>
           </div>
 
-          <div class="aviso" role="note">
+          <div class="aviso" role="note" data-revelar="subir" style="--atraso:850ms">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v5M12 16.5v.5"/></svg>
             <p>
               <strong>Isto é um protótipo de escola, não uma ferramenta de segurança real.</strong>
@@ -50,42 +57,67 @@
           </div>
         </div>
 
-        <!-- Ilustração: calculadora -> sinal -> localização -->
-        <svg class="ilustracao" viewBox="0 0 360 400" role="img" aria-label="Ilustração: um celular com a calculadora envia um sinal silencioso até um alfinete de localização">
-          <rect x="30" y="20" width="176" height="352" rx="30" fill="#120A1D" stroke="#4A2F6B" stroke-width="2"/>
-          <rect x="40" y="30" width="156" height="332" rx="22" fill="#000"/>
-          <text x="180" y="140" fill="#fff" font-size="46" font-weight="300" text-anchor="end" font-family="system-ui, sans-serif">190</text>
-          <g fill="#a5a5a5"><circle cx="64" cy="180" r="13"/><circle cx="100" cy="180" r="13"/><circle cx="136" cy="180" r="13"/></g>
-          <g fill="#333"><circle cx="64" cy="216" r="13"/><circle cx="100" cy="216" r="13"/><circle cx="136" cy="216" r="13"/><circle cx="64" cy="252" r="13"/><circle cx="100" cy="252" r="13"/><circle cx="136" cy="252" r="13"/><circle cx="64" cy="288" r="13"/><circle cx="100" cy="288" r="13"/><circle cx="136" cy="288" r="13"/><rect x="51" y="311" width="62" height="26" rx="13"/><circle cx="136" cy="324" r="13"/></g>
-          <g fill="#636366"><circle cx="172" cy="180" r="13"/><circle cx="172" cy="216" r="13"/><circle cx="172" cy="252" r="13"/><circle cx="172" cy="288" r="13"/></g>
-          <circle cx="172" cy="324" r="13" fill="#f2f2f2"/>
-          <g fill="none" stroke="#E8A317" stroke-linecap="round" stroke-width="4">
-            <path d="M222 150a40 40 0 0 1 0 56" opacity=".9"/>
-            <path d="M240 132a66 66 0 0 1 0 92" opacity=".55"/>
-            <path d="M258 114a92 92 0 0 1 0 128" opacity=".25"/>
-          </g>
-          <circle cx="306" cy="178" r="42" fill="#5B2C87"/>
-          <path d="M306 200c-10-12-16-19.5-16-27a16 16 0 0 1 32 0c0 7.5-6 15-16 27z" fill="#E8A317"/>
-          <circle cx="306" cy="172" r="6" fill="#2E1A47"/>
-        </svg>
+        <!-- Ilustração animada: digita 1 9 0 = e o alerta "sai" (animada por js/efeitos.js) -->
+        <div class="ilustracao-moldura" data-revelar="escala" style="--atraso:300ms">
+          <div data-parallax="0.1">
+            <svg class="ilustracao" data-hero-demo viewBox="0 0 360 400" role="img" aria-label="Ilustração: um celular com a calculadora digita 1 9 0 igual e envia um sinal silencioso até um alfinete de localização">
+              <rect x="30" y="20" width="176" height="352" rx="30" fill="#120A1D" stroke="#4A2F6B" stroke-width="2"/>
+              <rect x="40" y="30" width="156" height="332" rx="22" fill="#000"/>
+              <text data-hero-visor x="180" y="140" fill="#fff" font-size="46" font-weight="300" text-anchor="end" font-family="system-ui, sans-serif">190</text>
+              <g fill="#a5a5a5"><circle cx="64" cy="180" r="13"/><circle cx="100" cy="180" r="13"/><circle cx="136" cy="180" r="13"/></g>
+              <g fill="#333">
+                <circle cx="64" cy="216" r="13"/><circle cx="100" cy="216" r="13"/><circle class="k" data-hk="9" cx="136" cy="216" r="13"/>
+                <circle cx="64" cy="252" r="13"/><circle cx="100" cy="252" r="13"/><circle cx="136" cy="252" r="13"/>
+                <circle class="k" data-hk="1" cx="64" cy="288" r="13"/><circle cx="100" cy="288" r="13"/><circle cx="136" cy="288" r="13"/>
+                <rect class="k" data-hk="0" x="51" y="311" width="62" height="26" rx="13"/><circle cx="136" cy="324" r="13"/>
+              </g>
+              <g fill="#636366"><circle cx="172" cy="180" r="13"/><circle cx="172" cy="216" r="13"/><circle cx="172" cy="252" r="13"/><circle cx="172" cy="288" r="13"/><circle class="k" data-hk="=" cx="172" cy="324" r="13"/></g>
+              <g class="hero-ondas" fill="none" stroke="#E8A317" stroke-linecap="round" stroke-width="4">
+                <path class="onda-1" d="M222 150a40 40 0 0 1 0 56"/>
+                <path class="onda-2" d="M240 132a66 66 0 0 1 0 92"/>
+                <path class="onda-3" d="M258 114a92 92 0 0 1 0 128"/>
+              </g>
+              <circle class="hero-halo" cx="306" cy="178" r="42" fill="none" stroke="#E8A317" stroke-width="2"/>
+              <g class="hero-pin">
+                <circle cx="306" cy="178" r="42" fill="#5B2C87"/>
+                <path d="M306 200c-10-12-16-19.5-16-27a16 16 0 0 1 32 0c0 7.5-6 15-16 27z" fill="#E8A317"/>
+                <circle cx="306" cy="172" r="6" fill="#2E1A47"/>
+              </g>
+              <g class="hero-chip">
+                <rect x="238" y="234" width="118" height="30" rx="15" fill="#E8A317"/>
+                <text x="297" y="254" fill="#2E1A47" font-size="12.5" font-weight="800" text-anchor="middle" font-family="system-ui, sans-serif">Alerta enviado</text>
+              </g>
+            </svg>
+          </div>
+        </div>
       </div>
     </section>
 
+    <!-- Faixa rolando -->
+    <div class="faixa-moldura" role="img" aria-label="Sem som, sem vibração, sem notificação, sem rastro na tela.">
+      <div class="faixa">
+        <div class="faixa-trilho" aria-hidden="true">
+          <span>Sem som</span><span>Sem vibração</span><span>Sem notificação</span><span>Sem rastro na tela</span><span>Só uma calculadora</span>
+          <span>Sem som</span><span>Sem vibração</span><span>Sem notificação</span><span>Sem rastro na tela</span><span>Só uma calculadora</span>
+        </div>
+      </div>
+    </div>
+
     <!-- 2. Como testar -->
-    <section class="secao" style="padding-top:0">
+    <section class="secao">
       <div class="container grade grade-2">
-        <div class="cartao">
+        <div class="cartao" data-revelar="esquerda">
           <span class="olho">Teste em 30 segundos</span>
           <h2 style="font-size:clamp(1.7rem,6vw,2.3rem)">Como usar a demonstração</h2>
-          <ol class="teste-passos">
+          <ol class="teste-passos" data-revelar-grupo="subir">
             <li><p>Toque em <strong>Abrir a demonstração</strong>. Abre uma calculadora comum — faça contas à vontade.</p></li>
-            <li><p>Digite <span class="teclas"><kbd>1</kbd><kbd>9</kbd><kbd>0</kbd><kbd>=</kbd></span>. A tela mostra 190, como qualquer conta. Em segredo, o alerta foi disparado.</p></li>
+            <li><p>Digite <span class="teclas teclas-vivas"><kbd>1</kbd><kbd>9</kbd><kbd>0</kbd><kbd>=</kbd></span>. A tela mostra 190, como qualquer conta. Em segredo, o alerta foi disparado.</p></li>
             <li><p>Abra o <a href="painel.html">Painel do contato</a> em outra aba para ver o alerta que chegou.</p></li>
             <li><p>Para configurar o código e os contatos, <strong>segure o dedo no visor por 2 segundos</strong>.</p></li>
           </ol>
         </div>
 
-        <div class="grade atalhos">
+        <div class="grade atalhos" data-revelar-grupo="direita">
           <a class="cartao" href="estande.html">
             <div>
               <h3>Modo estande</h3>
@@ -121,5 +153,6 @@
   </footer>
 
   <script src="js/estado.js"></script>
+  <script src="js/efeitos.js"></script>
 </body>
 </html>

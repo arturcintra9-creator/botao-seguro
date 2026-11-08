@@ -71,5 +71,7 @@ js/calculadora.js       tela da calculadora, código secreto e gesto secreto
 js/configuracoes.js     formulário de configurações
 js/painel.js            painel do contato + mapa SVG
 js/estande.js           modo estande e linha do tempo
+js/efeitos.js           animações e scroll trigger (início e como funciona)
+css/efeitos.css         estilos das animações
 sw.js                   cache para funcionar offline
 ```
