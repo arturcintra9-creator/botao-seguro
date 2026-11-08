@@ -75,3 +75,12 @@ js/efeitos.js           animações e scroll trigger (início e como funciona)
 css/efeitos.css         estilos das animações
 sw.js                   cache para funcionar offline
 ```
+
+## Segurança e desempenho
+
+- `vercel.json` define uma política de segurança (CSP) com `connect-src 'self'`: o próprio
+  navegador **proíbe** o site de enviar dados para qualquer outro endereço. Também bloqueia
+  câmera, microfone e GPS, e não envia o endereço da página para outros sites (`no-referrer`).
+- Lighthouse (celular): 100 em desempenho, acessibilidade e boas práticas em todas as páginas.
+  A página de configurações tem `noindex` de propósito (não deve aparecer no Google).
+- As animações respeitam a opção "reduzir movimento" do sistema e pausam fora da tela.

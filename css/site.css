@@ -684,6 +684,8 @@ strong { color: var(--branco); font-weight: 600; }
   margin: 0 auto;
   padding: 0 0 24px;
 }
+/* Reserva a altura do painel antes do JS montá-lo: evita o rodapé "pular" (CLS). */
+.pagina-painel #painel { min-height: 404px; }
 .pagina-painel .painel {
   border-radius: var(--raio);
   overflow: hidden;
@@ -809,29 +811,6 @@ strong { color: var(--branco); font-weight: 600; }
 [data-etapa="3"] .fase-2,
 [data-etapa="4"] .fase-4 { display: block; animation: entrar 0.4s ease-out; }
 
-/* "Sinal" viajando da calculadora para o contato */
-.sinal {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin: 22px 0 0;
-}
-.sinal span {
-  width: 12px; height: 12px;
-  border-radius: 50%;
-  background: rgba(201, 174, 221, 0.22);
-  transition: background 0.3s;
-}
-[data-etapa="2"] .sinal span,
-[data-etapa="3"] .sinal span {
-  animation: viajar 1s ease-in-out infinite;
-}
-.sinal span:nth-child(2) { animation-delay: 0.12s; }
-.sinal span:nth-child(3) { animation-delay: 0.24s; }
-.sinal span:nth-child(4) { animation-delay: 0.36s; }
-.sinal span:nth-child(5) { animation-delay: 0.48s; }
-[data-etapa="4"] .sinal span { background: var(--ouro); }
-
 /* Linha do tempo */
 .linha-tempo {
   display: flex;
@@ -946,7 +925,9 @@ strong { color: var(--branco); font-weight: 600; }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
   }
 }
 
@@ -969,3 +950,210 @@ strong { color: var(--branco); font-weight: 600; }
   from { box-shadow: 0 0 0 2px var(--ouro), 0 0 0 0 rgba(232, 163, 23, 0.55), var(--sombra); }
   to   { box-shadow: 0 0 0 2px var(--ouro), 0 0 0 36px rgba(232, 163, 23, 0), var(--sombra); }
 }
+
+/* ============ 15. Painel: animações ============ */
+
+/* Espera: radar girando + anéis saindo do escudo */
+.espera { animation: entrar 0.5s ease-out; }
+.espera-icone::before {
+  content: "";
+  position: absolute;
+  inset: -0.6em;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0deg 260deg, rgba(232, 163, 23, 0.45) 360deg);
+  -webkit-mask: radial-gradient(circle, transparent 62%, #000 63%);
+  mask: radial-gradient(circle, transparent 62%, #000 63%);
+  animation: girar 3.2s linear infinite;
+}
+.anel {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(237, 224, 245, 0.35);
+  animation: anel 3.2s ease-out infinite;
+}
+.anel + .anel { animation-delay: 1.6s; }
+@keyframes girar { to { transform: rotate(360deg); } }
+@keyframes anel {
+  from { transform: scale(1); opacity: 0.6; }
+  to { transform: scale(2.3); opacity: 0; }
+}
+.reticencias i { font-style: normal; animation: piscar 1.4s infinite; }
+.reticencias i:nth-child(2) { animation-delay: 0.2s; }
+.reticencias i:nth-child(3) { animation-delay: 0.4s; }
+
+/* Chegada do alerta: clarão dourado */
+.painel { position: relative; }
+.painel-flash {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(120% 60% at 50% 0%, rgba(232, 163, 23, 0.55), rgba(232, 163, 23, 0) 70%);
+}
+.painel.flash .painel-flash { animation: clarao 1.3s ease-out; }
+@keyframes clarao {
+  0% { opacity: 0; }
+  15% { opacity: 1; }
+  100% { opacity: 0; }
+}
+.painel-alerta .painel-topo {
+  background: linear-gradient(90deg, rgba(232, 163, 23, 0.16), rgba(10, 4, 20, 0.2) 70%);
+}
+
+/* Itens do alerta entram em cascata */
+.alerta { animation: none; }
+.alerta > * { animation: entrar 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) backwards; }
+.alerta > :nth-child(1) { animation-delay: 0.05s; }
+.alerta > :nth-child(2) { animation-delay: 0.12s; }
+.alerta > :nth-child(3) { animation-delay: 0.19s; }
+.alerta > :nth-child(4) { animation-delay: 0.26s; }
+.alerta > :nth-child(5) { animation-delay: 0.36s; }
+.alerta > :nth-child(6) { animation-delay: 0.44s; }
+.alerta > :nth-child(7) { animation-delay: 0.5s; }
+.alerta > :nth-child(8) { animation-delay: 0.56s; }
+.alerta > :nth-child(9) { animation-delay: 0.62s; }
+.alerta > :nth-child(10) { animation-delay: 0.68s; }
+
+.alerta-faixa { animation-name: entrar, brilho-faixa; animation-duration: 0.55s, 2s; animation-iteration-count: 1, infinite; }
+@keyframes brilho-faixa { 50% { box-shadow: 0 0 0 0.35em rgba(232, 163, 23, 0.12); } }
+
+/* Mapa: rua se desenha, alfinete cai, área de precisão abre */
+.rua-principal {
+  stroke-dasharray: 300;
+  stroke-dashoffset: 300;
+  animation: desenhar 0.9s 0.35s ease-out forwards;
+}
+.rua-tracejada { opacity: 0; animation: aparecer 0.4s 1.1s forwards; }
+.pin-cair {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: cair 0.75s 0.8s cubic-bezier(0.3, 1.5, 0.5, 1) backwards;
+}
+.precisao {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: abrir 0.8s 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+}
+@keyframes desenhar { to { stroke-dashoffset: 0; } }
+@keyframes aparecer { to { opacity: 1; } }
+@keyframes cair {
+  from { transform: translateY(-70px); opacity: 0; }
+  60% { opacity: 1; }
+}
+@keyframes abrir { from { transform: scale(0); opacity: 0; } }
+
+/* ============ 16. Estande: animações ============ */
+
+.orbes-fixas { position: fixed; inset: 0; z-index: -1; }
+
+/* Celular da calculadora "chamando" o visitante enquanto ninguém digitou */
+.palco > .aparelho:first-child .celular { transition: box-shadow 0.6s; }
+[data-etapa="1"] .palco > .aparelho:first-child .celular {
+  animation: convite 2.6s ease-in-out infinite;
+}
+@keyframes convite {
+  0%, 100% { box-shadow: 0 0 0 2px #4A2F6B, 0 0 0 0 rgba(237, 224, 245, 0.35), var(--sombra); }
+  60% { box-shadow: 0 0 0 2px #6B3FA0, 0 0 0 18px rgba(237, 224, 245, 0), var(--sombra); }
+}
+
+/* Luz atrás do título do meio quando dá certo */
+.centro { position: relative; }
+.centro::before {
+  content: "";
+  position: absolute;
+  inset: -30% -20%;
+  z-index: -1;
+  background: radial-gradient(closest-side, rgba(232, 163, 23, 0.22), transparent);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.8s, transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+[data-etapa="4"] .centro::before { opacity: 1; transform: none; }
+
+/* Feixe: um "cometa" viaja da calculadora até o contato */
+.feixe {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  height: 4px;
+  margin: 28px auto 0;
+  border-radius: 999px;
+  background: rgba(201, 174, 221, 0.16);
+  clip-path: inset(-12px 0 -12px 0 round 999px);
+}
+.feixe::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--roxo-claro), var(--ouro));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+[data-etapa="4"] .feixe::before { transform: none; }
+.feixe-cometa {
+  position: absolute;
+  top: -7px;
+  left: 0;
+  width: 110px;
+  height: 18px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 85% 50%, rgba(255, 220, 140, 1), rgba(232, 163, 23, 0.6) 25%, rgba(232, 163, 23, 0) 70%);
+  opacity: 0;
+}
+[data-etapa="2"] .feixe-cometa,
+[data-etapa="3"] .feixe-cometa {
+  opacity: 1;
+  animation: cometa 0.85s linear infinite;
+}
+@keyframes cometa {
+  from { transform: translateX(-110px); }
+  to { transform: translateX(380px); }
+}
+
+/* Linha do tempo: barra de progresso + próxima etapa piscando + onda ao acender */
+.linha-tempo { position: relative; overflow: hidden; }
+.linha-tempo::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--roxo-claro), var(--ouro));
+  transform: scaleX(var(--progresso, 0));
+  transform-origin: left;
+  transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.etapa-num { position: relative; }
+.etapa.proxima .etapa-num {
+  border-color: var(--lavanda);
+  color: var(--branco);
+  animation: chamar 1.6s ease-in-out infinite;
+}
+@keyframes chamar {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(237, 224, 245, 0.4); }
+  60% { box-shadow: 0 0 0 10px rgba(237, 224, 245, 0); }
+}
+.etapa.feita .etapa-num::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 2px solid var(--ouro);
+  animation: onda-etapa 0.9s ease-out forwards;
+}
+@keyframes onda-etapa {
+  from { transform: scale(1); opacity: 1; }
+  to { transform: scale(2); opacity: 0; }
+}
+
+/* Reiniciar: celulares "piscam" e o ícone gira */
+.reiniciando .celular { animation: reiniciar 0.55s ease; }
+@keyframes reiniciar {
+  40% { transform: scale(0.97); filter: brightness(1.35); }
+}
+.botao-reiniciar svg { transition: transform 0.6s cubic-bezier(0.3, 1.4, 0.5, 1); }
+.reiniciando .botao-reiniciar svg { transform: rotate(-360deg); }

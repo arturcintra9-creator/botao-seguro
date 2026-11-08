@@ -13,12 +13,23 @@
   'use strict';
 
   var iframe = document.getElementById('calculadora');
-  var etapas = document.querySelectorAll('.etapa');
-  var ultimaEtapa = -1;
+  var linhaTempo = document.querySelector('.linha-tempo');
+  var etapas = Array.prototype.map.call(document.querySelectorAll('.etapa'), function (li) {
+    return { li: li, hora: li.querySelector('.etapa-hora') };
+  });
+  var ultimoEstado = '';     // evita mexer no DOM quando nada mudou
+  var temporizadorReinicio = null;
 
   /* ---------- começar do zero ---------- */
 
   function reiniciar() {
+    // Efeito visual: celulares "piscam" e o ícone do botão gira.
+    document.body.classList.remove('reiniciando');
+    void document.body.offsetWidth;
+    document.body.classList.add('reiniciando');
+    clearTimeout(temporizadorReinicio);
+    temporizadorReinicio = setTimeout(function () { document.body.classList.remove('reiniciando'); }, 700);
+
     BS.reiniciarDemo();
     // Recarrega a calculadora: visor zerado e etapa 1 marcada de novo.
     iframe.src = 'calculadora.html';
@@ -52,18 +63,23 @@
       a && a.notificadoEm
     ];
 
+    // Só redesenha se algo mudou de verdade.
+    var estado = horarios.map(function (h) { return h || 0; }).join('|');
+    if (estado === ultimoEstado) return;
+    ultimoEstado = estado;
+
     var etapa = 0;
-    etapas.forEach(function (li, i) {
+    etapas.forEach(function (e, i) {
       var feita = !!horarios[i];
-      li.classList.toggle('feita', feita);
-      li.querySelector('.etapa-hora').textContent = feita ? BS.hora(horarios[i]) : '';
+      e.li.classList.toggle('feita', feita);
+      e.hora.textContent = feita ? BS.hora(horarios[i]) : '';
       if (feita) etapa = i + 1;
     });
+    // A próxima etapa pendente pisca, para guiar o visitante.
+    etapas.forEach(function (e, i) { e.li.classList.toggle('proxima', i === etapa); });
 
-    if (etapa !== ultimaEtapa) {
-      ultimaEtapa = etapa;
-      document.body.dataset.etapa = String(etapa);
-    }
+    document.body.dataset.etapa = String(etapa);
+    linhaTempo.style.setProperty('--progresso', etapa / 4);
   }
 
   /* ---------- botões ---------- */
@@ -95,6 +111,6 @@
     if (chave === 'bs_config' || chave === null) preencherTextos();
     atualizar();
   });
-  setInterval(atualizar, 250);
+  setInterval(function () { if (!document.hidden) atualizar(); }, 250);
   reiniciar(); // o estande sempre começa limpo
 })();

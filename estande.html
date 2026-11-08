@@ -4,11 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Modo estande — Botão Seguro</title>
+  <meta name="description" content="Demonstração ao vivo do Botão Seguro: a calculadora e o celular do contato lado a lado.">
   <meta name="theme-color" content="#2E1A47">
   <link rel="icon" href="icones/marca.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/site.css">
+  <link rel="stylesheet" href="css/efeitos.css">
 </head>
 <body class="pagina-estande" data-etapa="0">
+  <div class="orbes orbes-fixas" aria-hidden="true"><span></span><span></span><span></span></div>
+
   <header class="estande-topo">
     <a class="marca" href="index.html" aria-label="Botão Seguro, início">
       <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#5B2C87"/><circle cx="16" cy="16" r="9" fill="none" stroke="#EDE0F5" stroke-width="2.5"/><circle cx="16" cy="16" r="4" fill="#E8A317"/></svg>
@@ -33,7 +37,7 @@
       <div class="fase fase-1">
         <span class="olho">Experimente</span>
         <h1>Digite o código secreto</h1>
-        <div class="teclas" data-codigo></div>
+        <div class="teclas teclas-vivas" data-codigo></div>
         <p>Repare: a calculadora não muda nada. Nem som, nem vibração, nem aviso.</p>
       </div>
       <div class="fase fase-2">
@@ -46,7 +50,7 @@
         <h1>O contato já sabe.</h1>
         <p>Do lado de lá: nome, horário e localização. Do lado de cá: só uma calculadora.</p>
       </div>
-      <div class="sinal" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="feixe" aria-hidden="true"><span class="feixe-cometa"></span></div>
     </section>
 
     <!-- Direita: o celular do contato de confiança -->
@@ -68,7 +72,7 @@
       <li class="etapa" data-passo="3"><span class="etapa-num">3</span><span><span class="etapa-nome">Alerta enviado</span><span class="etapa-hora"></span></span></li>
       <li class="etapa" data-passo="4"><span class="etapa-num">4</span><span><span class="etapa-nome">Contato notificado</span><span class="etapa-hora"></span></span></li>
     </ol>
-    <button type="button" class="botao botao-ouro botao-reiniciar" id="reiniciar">
+    <button type="button" class="botao botao-ouro botao-reiniciar brilho-auto" id="reiniciar">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
       Reiniciar demonstração
     </button>

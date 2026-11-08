@@ -8,7 +8,7 @@
  * Só funciona quando o site é aberto por http(s) ou localhost (não em file://).
  * Ao adicionar um arquivo novo ao projeto, inclua-o na lista ARQUIVOS.
  */
-var CACHE = 'botao-seguro-v2';
+var CACHE = 'botao-seguro-v3';
 
 var ARQUIVOS = [
   './',

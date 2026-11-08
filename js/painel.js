@@ -58,8 +58,8 @@
           '<line x1="87" y1="0" x2="87" y2="190"/><line x1="205" y1="0" x2="205" y2="190"/>' +
         '</g>' +
         // rua principal (onde está o alerta)
-        '<line x1="0" y1="122" x2="300" y2="122" stroke="#5B2C87" stroke-width="18"/>' +
-        '<line x1="0" y1="122" x2="300" y2="122" stroke="#6B3FA0" stroke-width="1.5" stroke-dasharray="6 6"/>' +
+        '<line class="rua-principal" x1="0" y1="122" x2="300" y2="122" stroke="#5B2C87" stroke-width="18"/>' +
+        '<line class="rua-tracejada" x1="0" y1="122" x2="300" y2="122" stroke="#6B3FA0" stroke-width="1.5" stroke-dasharray="6 6"/>' +
         // nomes das ruas
         '<g fill="#C9AEDD" font-size="7.5" font-family="system-ui, sans-serif" font-weight="600">' +
           '<text x="12" y="80">Rua do Ipê</text>' +
@@ -68,12 +68,14 @@
           '<text x="0" y="0" transform="translate(208 60) rotate(-90)">Rua Aurora</text>' +
         '</g>' +
         // área de precisão + pulsos + alfinete
-        '<circle cx="168" cy="122" r="30" fill="#E8A317" fill-opacity="0.12" stroke="#E8A317" stroke-opacity="0.45" stroke-dasharray="3 3"/>' +
+        '<circle class="precisao" cx="168" cy="122" r="30" fill="#E8A317" fill-opacity="0.12" stroke="#E8A317" stroke-opacity="0.45" stroke-dasharray="3 3"/>' +
         '<circle class="pulso" cx="168" cy="122" r="9" fill="none" stroke="#E8A317" stroke-width="2"/>' +
         '<circle class="pulso pulso-2" cx="168" cy="122" r="9" fill="none" stroke="#E8A317" stroke-width="2"/>' +
         '<ellipse cx="168" cy="123" rx="5" ry="2" fill="#000" fill-opacity="0.35"/>' +
-        '<path d="M168 122c-8-9.5-12.5-15.5-12.5-21.5a12.5 12.5 0 0 1 25 0c0 6-4.5 12-12.5 21.5z" fill="#E8A317" stroke="#2E1A47" stroke-width="1.5"/>' +
-        '<circle cx="168" cy="100.5" r="4.5" fill="#2E1A47"/>' +
+        '<g class="pin-cair">' +
+          '<path d="M168 122c-8-9.5-12.5-15.5-12.5-21.5a12.5 12.5 0 0 1 25 0c0 6-4.5 12-12.5 21.5z" fill="#E8A317" stroke="#2E1A47" stroke-width="1.5"/>' +
+          '<circle cx="168" cy="100.5" r="4.5" fill="#2E1A47"/>' +
+        '</g>' +
       '</g>' +
       // bússola e escala (não ampliam)
       '<g font-family="system-ui, sans-serif" font-weight="700">' +
@@ -94,11 +96,11 @@
   function htmlEspera(cfg) {
     return (
       '<div class="espera">' +
-        '<div class="espera-icone">' + ICONE_ESCUDO + '</div>' +
+        '<div class="espera-icone"><span class="anel"></span><span class="anel"></span>' + ICONE_ESCUDO + '</div>' +
         '<h2>Tudo tranquilo por aqui</h2>' +
         '<p>Você é contato de confiança de <strong>' + esc(cfg.nome) + '</strong>. ' +
         'Se ela acionar o Botão Seguro, o alerta aparece aqui na hora.</p>' +
-        '<p class="miudo">Aguardando alertas…</p>' +
+        '<p class="miudo">Aguardando alertas<span class="reticencias" aria-hidden="true"><i>.</i><i>.</i><i>.</i></span></p>' +
       '</div>'
     );
   }
@@ -116,7 +118,7 @@
           '<span>' + esc(a.local.referencia) + ' · precisão de ~' + a.local.precisaoMetros + ' m</span></div>' +
         '</div>' +
         '<div class="alerta-acoes">' +
-          '<button type="button" class="botao botao-ouro" data-acao="ligar">' + ICONE_TELEFONE + 'Ligar 190</button>' +
+          '<button type="button" class="botao botao-ouro brilho-auto" data-acao="ligar">' + ICONE_TELEFONE + 'Ligar 190</button>' +
           '<button type="button" class="botao botao-contorno" data-acao="mapa">' + ICONE_MAPA + 'Ver no mapa</button>' +
         '</div>' +
         '<p class="alerta-retorno" data-retorno aria-live="polite"></p>' +
@@ -148,14 +150,18 @@
         '<div class="painel-app">Botão Seguro<small>Celular de ' + esc(nomeContato) + '</small></div>' +
         '<span class="painel-status" data-status>Online</span>' +
       '</header>' +
-      '<div class="painel-corpo" data-corpo></div>';
+      '<div class="painel-corpo" data-corpo></div>' +
+      '<div class="painel-flash" aria-hidden="true"></div>';
 
     var corpo = raiz.querySelector('[data-corpo]');
     var status = raiz.querySelector('[data-status]');
     var chaveAtual = null;
     var temporizadorRetorno = null;
+    var relativo = null;      // <span> do "há X s"
+    var textoRelativo = '';   // último texto escrito nele (evita mexer no DOM à toa)
 
     function atualizar() {
+      if (document.hidden) return; // aba em segundo plano: não gasta bateria
       var a = BS.alertaAtual();
       // O alerta só "chega" depois do horário de envio simulado.
       var chegou = a && a.enviadoEm && Date.now() >= a.enviadoEm;
@@ -169,6 +175,15 @@
         status.textContent = chegou ? 'Alerta' : 'Online';
         corpo.scrollTop = 0;
         raiz.scrollTop = 0;
+        relativo = corpo.querySelector('[data-relativo]');
+        textoRelativo = '';
+
+        // Clarão dourado na chegada (reinicia a animação mesmo se vier outro alerta).
+        raiz.classList.remove('flash');
+        if (chegou) {
+          void raiz.offsetWidth;
+          raiz.classList.add('flash');
+        }
 
         // Etapa 4: o contato foi notificado (o alerta apareceu na tela dele).
         if (chegou && !a.notificadoEm) {
@@ -177,9 +192,9 @@
         }
       }
 
-      if (chegou) {
-        var rel = corpo.querySelector('[data-relativo]');
-        if (rel) rel.textContent = tempoRelativo(a.enviadoEm);
+      if (chegou && relativo) {
+        var t = tempoRelativo(a.enviadoEm);
+        if (t !== textoRelativo) { textoRelativo = t; relativo.textContent = t; }
       }
     }
 
@@ -206,6 +221,7 @@
 
     BS.ouvir(atualizar);           // mudanças vindas de outras abas / do iframe
     setInterval(atualizar, 250);   // garantia extra + "há X s"
+    document.addEventListener('visibilitychange', atualizar); // voltou para a aba: atualiza na hora
     atualizar();
 
     return { atualizar: atualizar };

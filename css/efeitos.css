@@ -442,9 +442,9 @@ html, body { overflow-x: clip; }
   justify-content: center;
   transition: opacity 0.5s ease;
 }
-.js .historia-passo { opacity: 0.25; }
+.js .historia-passo { opacity: 0.58; } /* 0.58 mantém contraste acessível (≥ 4,5:1) */
 .js .historia-passo.ativo { opacity: 1; }
-.historia-passo h3 {
+.historia-passo h2 {
   font-size: clamp(2rem, 4.4vw, 3rem);
   letter-spacing: -0.045em;
   line-height: 1.02;
