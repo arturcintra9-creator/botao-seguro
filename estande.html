@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Modo estande — Botão Seguro</title>
+  <meta name="theme-color" content="#2E1A47">
+  <link rel="icon" href="icones/marca.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/site.css">
+</head>
+<body class="pagina-estande" data-etapa="0">
+  <header class="estande-topo">
+    <a class="marca" href="index.html" aria-label="Botão Seguro, início">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#5B2C87"/><circle cx="16" cy="16" r="9" fill="none" stroke="#EDE0F5" stroke-width="2.5"/><circle cx="16" cy="16" r="4" fill="#E8A317"/></svg>
+      Botão Seguro <small>· Modo estande</small>
+    </a>
+    <button type="button" class="botao botao-contorno" id="tela-cheia">Tela cheia</button>
+  </header>
+
+  <main class="palco">
+    <!-- Esquerda: a calculadora, dentro da moldura de celular -->
+    <section class="aparelho" aria-label="Celular da usuária">
+      <div class="aparelho-rotulo"><strong data-nome-usuaria>Celular da Ana</strong>o que o agressor vê</div>
+      <div class="celular">
+        <div class="celular-tela">
+          <iframe id="calculadora" title="Calculadora (o disfarce)"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- Meio: instruções que mudam conforme a demonstração avança -->
+    <section class="centro" aria-live="polite">
+      <div class="fase fase-1">
+        <span class="olho">Experimente</span>
+        <h1>Digite o código secreto</h1>
+        <div class="teclas" data-codigo></div>
+        <p>Repare: a calculadora não muda nada. Nem som, nem vibração, nem aviso.</p>
+      </div>
+      <div class="fase fase-2">
+        <span class="olho">Em silêncio</span>
+        <h1>Enviando o alerta…</h1>
+        <p>A tela da calculadora mostra só o resultado da conta. Por trás, o pedido de ajuda já saiu.</p>
+      </div>
+      <div class="fase fase-4">
+        <span class="olho">Pronto</span>
+        <h1>O contato já sabe.</h1>
+        <p>Do lado de lá: nome, horário e localização. Do lado de cá: só uma calculadora.</p>
+      </div>
+      <div class="sinal" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+    </section>
+
+    <!-- Direita: o celular do contato de confiança -->
+    <section class="aparelho" aria-label="Celular do contato de confiança">
+      <div class="aparelho-rotulo"><strong data-nome-contato>Celular do contato</strong>quem recebe o alerta</div>
+      <div class="celular">
+        <div class="celular-tela">
+          <div id="painel"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Linha do tempo -->
+  <section class="linha-tempo" aria-label="Linha do tempo da demonstração">
+    <ol class="etapas">
+      <li class="etapa" data-passo="1"><span class="etapa-num">1</span><span><span class="etapa-nome">Calculadora aberta</span><span class="etapa-hora"></span></span></li>
+      <li class="etapa" data-passo="2"><span class="etapa-num">2</span><span><span class="etapa-nome">Código digitado</span><span class="etapa-hora"></span></span></li>
+      <li class="etapa" data-passo="3"><span class="etapa-num">3</span><span><span class="etapa-nome">Alerta enviado</span><span class="etapa-hora"></span></span></li>
+      <li class="etapa" data-passo="4"><span class="etapa-num">4</span><span><span class="etapa-nome">Contato notificado</span><span class="etapa-hora"></span></span></li>
+    </ol>
+    <button type="button" class="botao botao-ouro botao-reiniciar" id="reiniciar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+      Reiniciar demonstração
+    </button>
+  </section>
+
+  <footer class="rodape rodape-estande">
+    <p><strong>Protótipo acadêmico — Projeto do Ano 2026, Senac.</strong> Não substitui os canais oficiais. Em emergência, ligue 180 ou 190.</p>
+  </footer>
+
+  <script src="js/estado.js"></script>
+  <script src="js/painel.js"></script>
+  <script src="js/estande.js"></script>
+</body>
+</html>

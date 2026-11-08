@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Painel do contato — Botão Seguro</title>
+  <meta name="theme-color" content="#2E1A47">
+  <link rel="icon" href="icones/marca.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+  <header class="topo">
+    <a class="marca" href="index.html" aria-label="Botão Seguro, início">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#5B2C87"/><circle cx="16" cy="16" r="9" fill="none" stroke="#EDE0F5" stroke-width="2.5"/><circle cx="16" cy="16" r="4" fill="#E8A317"/></svg>
+      Botão Seguro
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <a href="como-funciona.html">Como funciona</a>
+      <a href="painel.html" aria-current="page">Painel</a>
+      <a href="estande.html">Modo estande</a>
+    </nav>
+  </header>
+
+  <main class="pagina-painel">
+    <h1 class="sr-only">Painel do contato de confiança</h1>
+    <!-- O conteúdo é montado por js/painel.js -->
+    <div id="painel"></div>
+
+    <div class="rodape-painel">
+      <p style="font-size:.9rem;margin-bottom:4px">Esta é a tela de quem <strong>recebe</strong> o alerta. Dispare o código na <a href="calculadora.html">calculadora</a> e volte aqui.</p>
+      <button type="button" class="botao-texto" id="limpar">Limpar alerta da demonstração</button>
+    </div>
+  </main>
+
+  <footer class="rodape">
+    <p><strong>Protótipo acadêmico — Projeto do Ano 2026, Senac.</strong> Não substitui os canais oficiais. Em emergência, ligue 180 ou 190.</p>
+  </footer>
+
+  <script src="js/estado.js"></script>
+  <script src="js/painel.js"></script>
+  <script>
+    // Monta o painel e liga o botão de limpar.
+    var painel = PainelContato.montar(document.getElementById('painel'));
+    document.getElementById('limpar').addEventListener('click', function () {
+      BS.reiniciarDemo();
+      painel.atualizar();
+    });
+  </script>
+</body>
+</html>

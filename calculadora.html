@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Calculadora</title>
+  <meta name="theme-color" content="#000000">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Calculadora">
+  <link rel="manifest" href="calculadora.webmanifest">
+  <link rel="icon" href="icones/calculadora.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icones/calculadora-180.png">
+  <link rel="stylesheet" href="css/calculadora.css">
+</head>
+<body>
+  <!-- Visual propositalmente genérico: nada aqui pode lembrar outra coisa além de uma calculadora. -->
+  <main class="calc">
+    <div class="visor" id="visor">
+      <span id="visor-texto" aria-live="polite">0</span>
+    </div>
+
+    <div class="teclado" id="teclado">
+      <button class="t t-funcao" data-tecla="C" id="tecla-limpar" aria-label="Apagar tudo">AC</button>
+      <button class="t t-funcao" data-tecla="±" aria-label="Trocar sinal">±</button>
+      <button class="t t-funcao" data-tecla="%" aria-label="Porcentagem">%</button>
+      <button class="t t-op" data-tecla="/" aria-label="Dividir">÷</button>
+
+      <button class="t" data-tecla="7">7</button>
+      <button class="t" data-tecla="8">8</button>
+      <button class="t" data-tecla="9">9</button>
+      <button class="t t-op" data-tecla="*" aria-label="Multiplicar">×</button>
+
+      <button class="t" data-tecla="4">4</button>
+      <button class="t" data-tecla="5">5</button>
+      <button class="t" data-tecla="6">6</button>
+      <button class="t t-op" data-tecla="-" aria-label="Subtrair">−</button>
+
+      <button class="t" data-tecla="1">1</button>
+      <button class="t" data-tecla="2">2</button>
+      <button class="t" data-tecla="3">3</button>
+      <button class="t t-op" data-tecla="+" aria-label="Somar">+</button>
+
+      <button class="t t-zero" data-tecla="0">0</button>
+      <button class="t" data-tecla="," aria-label="Vírgula">,</button>
+      <button class="t t-op" data-tecla="=" aria-label="Igual">=</button>
+    </div>
+  </main>
+
+  <script src="js/estado.js"></script>
+  <script src="js/calculadora-motor.js"></script>
+  <script src="js/calculadora.js"></script>
+</body>
+</html>

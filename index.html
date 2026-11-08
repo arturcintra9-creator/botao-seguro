@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Botão Seguro — Projeto do Ano 2026, Senac</title>
+  <meta name="description" content="Protótipo acadêmico de um aplicativo disfarçado de calculadora que envia um alerta silencioso a contatos de confiança.">
+  <meta name="theme-color" content="#2E1A47">
+  <link rel="icon" href="icones/marca.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+  <header class="topo">
+    <a class="marca" href="index.html" aria-label="Botão Seguro, início">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#5B2C87"/><circle cx="16" cy="16" r="9" fill="none" stroke="#EDE0F5" stroke-width="2.5"/><circle cx="16" cy="16" r="4" fill="#E8A317"/></svg>
+      Botão Seguro
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <a href="como-funciona.html">Como funciona</a>
+      <a href="painel.html">Painel</a>
+      <a href="estande.html">Modo estande</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- 1. Apresentação -->
+    <section class="hero">
+      <div class="container hero-grade">
+        <div>
+          <span class="selo">Protótipo acadêmico · Projeto do Ano 2026 · Senac</span>
+          <h1>Parece uma calculadora. É um pedido de ajuda.</h1>
+          <p class="lead">
+            O Botão Seguro é um app disfarçado de calculadora. Uma mulher em situação de
+            violência doméstica digita um código secreto e o app avisa, em silêncio,
+            seus contatos de confiança — com a localização dela. Sem som, sem vibração,
+            sem nada na tela.
+          </p>
+          <div class="botoes">
+            <a class="botao botao-ouro" href="calculadora.html">Abrir a demonstração</a>
+            <a class="botao botao-contorno" href="como-funciona.html">Como funciona</a>
+          </div>
+
+          <div class="aviso" role="note">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v5M12 16.5v.5"/></svg>
+            <p>
+              <strong>Isto é um protótipo de escola, não uma ferramenta de segurança real.</strong>
+              Nada é enviado de verdade: não há servidor, SMS nem ligação. Ele não substitui
+              os canais oficiais. Em emergência, ligue <strong>180</strong> ou <strong>190</strong>.
+            </p>
+          </div>
+        </div>
+
+        <!-- Ilustração: calculadora -> sinal -> localização -->
+        <svg class="ilustracao" viewBox="0 0 360 400" role="img" aria-label="Ilustração: um celular com a calculadora envia um sinal silencioso até um alfinete de localização">
+          <rect x="30" y="20" width="176" height="352" rx="30" fill="#120A1D" stroke="#4A2F6B" stroke-width="2"/>
+          <rect x="40" y="30" width="156" height="332" rx="22" fill="#000"/>
+          <text x="180" y="140" fill="#fff" font-size="46" font-weight="300" text-anchor="end" font-family="system-ui, sans-serif">190</text>
+          <g fill="#a5a5a5"><circle cx="64" cy="180" r="13"/><circle cx="100" cy="180" r="13"/><circle cx="136" cy="180" r="13"/></g>
+          <g fill="#333"><circle cx="64" cy="216" r="13"/><circle cx="100" cy="216" r="13"/><circle cx="136" cy="216" r="13"/><circle cx="64" cy="252" r="13"/><circle cx="100" cy="252" r="13"/><circle cx="136" cy="252" r="13"/><circle cx="64" cy="288" r="13"/><circle cx="100" cy="288" r="13"/><circle cx="136" cy="288" r="13"/><rect x="51" y="311" width="62" height="26" rx="13"/><circle cx="136" cy="324" r="13"/></g>
+          <g fill="#636366"><circle cx="172" cy="180" r="13"/><circle cx="172" cy="216" r="13"/><circle cx="172" cy="252" r="13"/><circle cx="172" cy="288" r="13"/></g>
+          <circle cx="172" cy="324" r="13" fill="#f2f2f2"/>
+          <g fill="none" stroke="#E8A317" stroke-linecap="round" stroke-width="4">
+            <path d="M222 150a40 40 0 0 1 0 56" opacity=".9"/>
+            <path d="M240 132a66 66 0 0 1 0 92" opacity=".55"/>
+            <path d="M258 114a92 92 0 0 1 0 128" opacity=".25"/>
+          </g>
+          <circle cx="306" cy="178" r="42" fill="#5B2C87"/>
+          <path d="M306 200c-10-12-16-19.5-16-27a16 16 0 0 1 32 0c0 7.5-6 15-16 27z" fill="#E8A317"/>
+          <circle cx="306" cy="172" r="6" fill="#2E1A47"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- 2. Como testar -->
+    <section class="secao" style="padding-top:0">
+      <div class="container grade grade-2">
+        <div class="cartao">
+          <span class="olho">Teste em 30 segundos</span>
+          <h2 style="font-size:clamp(1.7rem,6vw,2.3rem)">Como usar a demonstração</h2>
+          <ol class="teste-passos">
+            <li><p>Toque em <strong>Abrir a demonstração</strong>. Abre uma calculadora comum — faça contas à vontade.</p></li>
+            <li><p>Digite <span class="teclas"><kbd>1</kbd><kbd>9</kbd><kbd>0</kbd><kbd>=</kbd></span>. A tela mostra 190, como qualquer conta. Em segredo, o alerta foi disparado.</p></li>
+            <li><p>Abra o <a href="painel.html">Painel do contato</a> em outra aba para ver o alerta que chegou.</p></li>
+            <li><p>Para configurar o código e os contatos, <strong>segure o dedo no visor por 2 segundos</strong>.</p></li>
+          </ol>
+        </div>
+
+        <div class="grade atalhos">
+          <a class="cartao" href="estande.html">
+            <div>
+              <h3>Modo estande</h3>
+              <p>Para o notebook: a calculadora e o celular do contato lado a lado, ao vivo.</p>
+            </div>
+            <span class="seta" aria-hidden="true">→</span>
+          </a>
+          <a class="cartao" href="painel.html">
+            <div>
+              <h3>Painel do contato</h3>
+              <p>A tela de quem recebe o alerta: nome, horário e localização no mapa.</p>
+            </div>
+            <span class="seta" aria-hidden="true">→</span>
+          </a>
+          <a class="cartao" href="como-funciona.html">
+            <div>
+              <h3>Por que um disfarce?</h3>
+              <p>Os 3 passos, os dados da pesquisa e os limites do projeto.</p>
+            </div>
+            <span class="seta" aria-hidden="true">→</span>
+          </a>
+          <div class="cartao equipe">
+            <span class="olho">Equipe</span>
+            <p style="margin:0">Artur, João Victor, Pedro e Renato.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    <p><strong>Protótipo acadêmico — Projeto do Ano 2026, Senac.</strong> Não substitui os canais oficiais. Em emergência, ligue 180 ou 190.</p>
+  </footer>
+
+  <script src="js/estado.js"></script>
+</body>
+</html>
